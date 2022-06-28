@@ -1,0 +1,15 @@
+<h2>Login</h2>
+<hr>
+<form>
+	<strong>{{error}}</strong>
+	<label>
+		<p>Username</p>
+		<input [(ngModel)]="username" name="username">
+	</label>
+	<label>
+		<p>Password</p>
+		<input [(ngModel)]="password" name="password" type="password">
+	</label>
+	<app-button btnText="Login" btnClass="secondary" (btnClick)="login()"></app-button>
+</form>
+

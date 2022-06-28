@@ -1,0 +1,28 @@
+.product-card {
+    display: flex;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+    background-color: white;
+    border: 1px solid #d9d9d9;
+    border-radius: 5px;
+    align-items: flex-start;
+}
+.product-card img {
+    width: 25%;
+    height: auto;
+    margin-right: 3rem;
+}
+.content h3 {
+    font-size: 1.75rem;
+}
+.content div {
+    display: flex;
+    margin-top: 2rem;
+}
+.content div p {
+    font-size: 1.5rem;
+    margin-right: 1rem;
+}
+.content span {
+    color: var(--gold)
+}

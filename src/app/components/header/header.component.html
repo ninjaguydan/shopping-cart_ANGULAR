@@ -1,0 +1,17 @@
+<header>
+	<img class="logo {{ currentUser ? '':'centered' }}" src="{{imagePath}}" alt="main logo"/>
+	<nav *ngIf="currentUser">
+		<ul>
+			<li>{{currentUser.username}}</li>
+			<li>
+				<button class="icon">
+					<fa-icon [icon]="iCart"></fa-icon>
+					({{userCartCount}})
+				</button>
+			</li>
+			<li>
+				<app-button btnText="Logout" btnClass="secondary" (btnClick)="logout()"></app-button>
+			</li>
+		</ul>
+	</nav>
+</header>

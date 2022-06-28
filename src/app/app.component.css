@@ -1,0 +1,21 @@
+.container {
+    padding: 10rem 2rem 2rem 2rem;
+    display: flex;
+    justify-content: space-around;
+    gap: 1rem;
+}
+.card {
+    width: 100%;
+    max-width: 550px;
+    padding: 1.5rem;
+}
+.card.cart {
+    max-width: 300px;
+    background-color: white;
+    border: 1px solid #d9d9d9;
+    height: fit-content;
+}
+.card.product-list {
+    max-width: 961px;
+    padding: 0;
+}

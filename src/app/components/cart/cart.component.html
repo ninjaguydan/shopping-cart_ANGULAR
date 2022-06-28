@@ -1,0 +1,27 @@
+<h3>Your Cart</h3>
+<div *ngFor="let p of userCart?.items" class="cart-item">
+	<img src="{{p.imgUrl}}" alt="{{p.name}}">
+	<div>
+		<p>{{p.price | currency}} <span>x {{p.quantity}}</span></p>
+		<app-button btnText="Remove" btnClass="secondary cart" (btnClick)="removeProduct(p.name)"></app-button>
+	</div>
+</div>
+<div class="totals">
+	<strong>Subtotal:</strong>
+	<strong>{{subtotal | currency}}</strong>
+</div>
+<div class="totals">
+	<strong>Taxes:</strong>
+	<strong>{{salesTax | currency}}</strong>
+</div>
+<div class="totals">
+	<strong>Shipping:</strong>
+	<strong class="{{ shipping === 0 ? 'free' : '' }}">{{shipping | currency}}</strong>
+</div>
+<hr>
+<div class="totals final">
+	<strong>Total:</strong>
+	<strong>{{grandTotal | currency}}</strong>
+</div>
+
+

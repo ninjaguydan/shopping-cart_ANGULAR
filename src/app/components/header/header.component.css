@@ -1,0 +1,42 @@
+header {
+    background-color: white;
+    box-shadow: 5px 5px 5px #54545438;
+    display: flex;
+    justify-content: space-between;
+    padding: 1rem;
+    align-items: center;
+    position: fixed;
+    width: 100%;
+}
+header .logo {
+    width: 15rem;
+}
+header .logo.centered {
+    margin: 0 auto;
+}
+header nav {
+    width: 50%;
+}
+header nav ul {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    max-width: 300px;
+    list-style: none;
+    margin-left: auto;
+}
+li {
+    margin-left: auto;
+}
+button.icon {
+    background-color: unset;
+    border: none;
+}
+button.icon fa-icon {
+    color: var(--gold);
+    font-size: 1.125rem;
+}
+button.icon {
+    cursor: pointer;
+}

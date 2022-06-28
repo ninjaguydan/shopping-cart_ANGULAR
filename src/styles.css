@@ -1,1 +1,46 @@
 /* You can add global styles to this file, and also import other style files */
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400&display=swap");
+
+:root {
+    --gold: #e4ba56;
+    --gray: #545454;
+}
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    /*outline: 1px dotted magenta;*/
+}
+body {
+    background-color: ghostwhite;
+    font-family: "Poppins", sans-serif;
+    color: var(--gray)
+}
+.btn {
+    padding: .5rem 2rem;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+}
+.primary {
+    background-color: var(--gold);
+    color: black;
+}
+.primary:hover {
+    background-color: #ecc874;
+}
+.secondary {
+    background-color: var(--gray);
+    color: white;
+}
+.cart {
+    /*margin-top: 10px;*/
+    width: 80%;
+    padding: 0.25rem;
+}
+.secondary:hover {
+    background-color: #3d3d3d;
+}
+.card {
+
+}

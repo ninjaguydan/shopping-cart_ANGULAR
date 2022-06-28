@@ -1,0 +1,18 @@
+<h2>Sign Up</h2>
+<hr>
+<form>
+	<strong *ngIf="error">{{error}}</strong>
+	<label>
+		<p>Username</p>
+		<input [(ngModel)]="username" name="username">
+	</label>
+	<label>
+		<p>Password</p>
+		<input [(ngModel)]="password" name="password" type="password">
+	</label>
+	<label>
+		<p>Confirm Password</p>
+		<input [(ngModel)]="confirm" name="confirm" type="password">
+	</label>
+	<app-button btnText="Register" btnClass="secondary" (btnClick)="addUser()"></app-button>
+</form>

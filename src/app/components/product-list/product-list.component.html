@@ -1,0 +1,15 @@
+<div *ngFor="let product of productList" class="product-card">
+	<img alt="{{product.name}}" src="{{product.imgUrl}}">
+	<div class="content">
+		<h3>{{product.name}}</h3>
+		<span *ngFor="let s of [].constructor(6); let i = index">
+			<fa-icon [icon]="star" *ngIf="i < product.rating"></fa-icon>
+			<fa-icon [icon]="starLine" *ngIf="i > product.rating"></fa-icon>
+		</span>
+		<p>Lorem ipsum dolor sit amet, ut congue, odio eget sodales iaculis, est lectus suscipit tortor, at posuere lorem mi nec lectus. Aliquam arcu eros, faucibus o, vestibulum convallis.</p>
+		<div>
+			<p>{{product.price | currency}}</p>
+			<app-button btnText="Add to Cart" btnClass="primary" (btnClick)="addProduct(product.name)"></app-button>
+		</div>
+	</div>
+</div>
