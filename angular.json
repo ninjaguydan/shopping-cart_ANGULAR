@@ -94,10 +94,14 @@
             ],
             "scripts": []
           }
+        },
+        "deploy": {
+          "builder": "angular-cli-ghpages:deploy"
         }
       }
     }
   },
+  "defaultProject": "shopping",
   "cli": {
     "analytics": false
   }
