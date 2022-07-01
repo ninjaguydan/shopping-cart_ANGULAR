@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {DataService} from "../../data.service";
+import {DataService} from "../../services/data.service";
 import IProduct from "../../interfaces/IProduct";
 import { faStar as outline } from "@fortawesome/free-regular-svg-icons";
 import { faStar as solid } from "@fortawesome/free-solid-svg-icons";
@@ -21,8 +21,8 @@ export class ProductListComponent implements OnInit {
 	ngOnInit(): void {
 	}
 
-	addProduct(productName:string){
-		let newProduct:IProduct|undefined = this.productList.find(n => n.name === productName)
+	addProduct(productName:string):void{
+		let newProduct:IProduct = this.productList.find(n => n.name === productName)!
 		// @ts-ignore
 		this.dataService.addProduct(newProduct)
 	}

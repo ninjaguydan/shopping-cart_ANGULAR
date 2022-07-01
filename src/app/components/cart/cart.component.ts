@@ -1,7 +1,8 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {DataService} from "../../data.service";
+import {DataService} from "../../services/data.service";
 import IUser from "../../interfaces/IUser";
 import {Subscription} from "rxjs";
+import ICart from "../../interfaces/ICart";
 
 @Component({
 	selector: 'app-cart',
@@ -9,36 +10,37 @@ import {Subscription} from "rxjs";
 	styleUrls: ['./cart.component.css']
 })
 export class CartComponent implements OnInit, OnDestroy {
-	currentUser!:IUser|null
-	cartSub!:Subscription
-	carts!:any
-	userCart!:any
+	cartsSub!:Subscription
+	userCart!:ICart|undefined
 	subtotal:number = 0
 	salesTax:number = 0
-	shipping:number = 5
+	shipping:number = 50
 	grandTotal:number = 0
 
 	constructor(private dataService:DataService) {
-		this.cartSub = dataService.carts$.subscribe(nextValue => {
-			this.carts = nextValue
-			this.userCart = this.carts.find((cart:any) => cart.user === dataService.currentUser?.id)
-			let total = 0
-			this.subtotal = this.userCart?.items.forEach((item:any) => {
-				total += item.quantity*item.price
-			})
-			this.subtotal = total
-			this.salesTax = (.07 * this.subtotal)
-			this.shipping = this.subtotal > 250 ? 0 : 5
-			this.grandTotal = this.subtotal+this.salesTax+this.shipping
-		} )
+		this.userCart = dataService.carts.find((cart) => cart.user === dataService.currentUser!.id)
+		this.updateCart()
+		this.cartsSub = dataService.carts$.subscribe((updatedCart) => {
+			this.userCart = updatedCart.find((cart) => cart.user === dataService.currentUser!.id)
+			this.updateCart()
+		})
 	}
 
 	ngOnInit(): void {
 	}
-	ngOnDestroy() {
-		this.cartSub.unsubscribe()
+	ngOnDestroy():void {
+		this.cartsSub.unsubscribe()
 	}
 	removeProduct(productName:string):void{
-		this.dataService.removeProduct(productName, this.dataService.currentUser?.id)
+		this.dataService.removeProduct(productName, this.dataService.currentUser!.id)
+	}
+	updateCart():void{
+		this.subtotal = 0
+		this.userCart?.items.forEach((i) => {
+			this.subtotal += (i.quantity * i.item.price)
+		})
+		this.salesTax = (.07 * this.subtotal)
+		this.shipping = this.subtotal > 300 ? 0 : 50
+		this.grandTotal = this.subtotal + this.salesTax + this.shipping
 	}
 }

@@ -1,9 +1,9 @@
 <h3>Your Cart</h3>
 <div *ngFor="let p of userCart?.items" class="cart-item">
-	<img src="{{p.imgUrl}}" alt="{{p.name}}">
+	<img src="{{p.item.imgUrl}}" alt="{{p.item.name}}">
 	<div>
-		<p>{{p.price | currency}} <span>x {{p.quantity}}</span></p>
-		<app-button btnText="Remove" btnClass="secondary cart" (btnClick)="removeProduct(p.name)"></app-button>
+		<p>{{p.item.price | currency}} <span>x {{p.quantity}}</span></p>
+		<app-button btnText="Remove" btnClass="secondary cart" (btnClick)="removeProduct(p.item.name)"></app-button>
 	</div>
 </div>
 <div class="totals">

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {DataService} from "../../data.service";
+import {DataService} from "../../services/data.service";
 
 @Component({
   selector: 'app-login',
@@ -18,5 +18,4 @@ export class LoginComponent implements OnInit {
   login(){
     this.error=this.dataService.login(this.username, this.password)
   }
-
 }

@@ -7,7 +7,7 @@
 	</ng-template>
 	<ng-template #showApp>
 		<app-product-list class="card product-list"></app-product-list>
-		<app-cart class="card cart"></app-cart>
+		<app-cart *ngIf="userCart" class="card cart"></app-cart>
 	</ng-template>
 
 </div>

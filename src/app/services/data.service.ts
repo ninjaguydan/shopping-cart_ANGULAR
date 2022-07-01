@@ -1,14 +1,16 @@
 import {Injectable, OnInit} from '@angular/core';
-import IUser from "./interfaces/IUser";
-import IProduct from "./interfaces/IProduct";
+import IUser from "../interfaces/IUser";
+import IProduct from "../interfaces/IProduct";
 import {v4 as uuid} from 'uuid'
 import {Subject} from "rxjs";
+import ICart from "../interfaces/ICart";
+import ICartItem from "../interfaces/ICartItem";
 
 @Injectable({
 	providedIn: 'root'
 })
 export class DataService {
-	productList: Array<IProduct> = [
+	productList:Array<IProduct> = [
 		{
 			"imgUrl": "https://guesseu.scene7.com/is/image/GuessEU/M63H24W7JF0-L302-ALTGHOST?wid=1500&fmt=jpeg&qlt=80&op_sharpen=0&op_usm=1.0,1.0,5,0&iccEmbed=0",
 			"name": "Checker Print Shirt",
@@ -40,11 +42,11 @@ export class DataService {
 			"rating": 3
 		}
 	]
-	currentUser!: IUser|null
-	currentUser$ = new Subject<IUser | null>()
-	userList: Array<IUser> = []
-	carts:Array<any> = []
-	carts$ = new Subject<Array<any>>()
+	userList:Array<IUser> = []
+	currentUser!:IUser|null
+	currentUser$ = new Subject<IUser|null>()
+	carts:Array<ICart> = []
+	carts$ = new Subject<Array<ICart>>()
 
 	constructor() {
 	}
@@ -53,7 +55,7 @@ export class DataService {
 		this.currentUser$.next(null)
 	}
 
-	login(username: string, password: string): void | string {
+	login(username:string, password:string):void|string {
 		const foundUser = this.userList.find(u => u.username === username)
 		if (foundUser && foundUser.password === password) {
 			this.currentUser = foundUser
@@ -63,7 +65,8 @@ export class DataService {
 		}
 	}
 
-	addUser(newUser: { username: string, password: string, confirm: string }): void | string {
+	addUser(newUser:{ username:string, password:string, confirm:string }):void|string {
+		//Add validation to prevent empty fields
 		if (this.userList.find(ul => ul.username.toLowerCase() === newUser.username.toLowerCase())) {
 			return "Username already exists"
 		}
@@ -74,7 +77,6 @@ export class DataService {
 			id: uuid(),
 			username: newUser.username,
 			password: newUser.password,
-			cart: []
 		}
 		this.userList = [
 			userObj,
@@ -83,16 +85,13 @@ export class DataService {
 		this.login(newUser.username, newUser.password)
 	}
 
-	addProduct(product: IProduct): void {
-		let myCart = this.carts.find(cart => cart.user === this.currentUser?.id)
+	addProduct(product:IProduct):void {
+		let myCart:ICart|undefined = this.carts.find((cart) => cart.user === this.currentUser?.id)
 		if ( !myCart ) {
 			myCart = {
-				user: this.currentUser?.id,
+				user: this.currentUser!.id,
 				items: [
-					{
-						...product,
-						quantity: 1
-					}
+					{item:product, quantity: 1}
 				]
 			}
 			this.carts = [
@@ -102,35 +101,32 @@ export class DataService {
 			this.carts$.next(this.carts)
 			return
 		} else {
-			const foundProduct = myCart.items.find((i:any) => i.name === product.name)
+			const foundProduct = myCart.items.find((i) => i.item.name === product.name)
 			if ( foundProduct ) {
 				foundProduct.quantity++
 			} else {
 				myCart.items = [
 					...myCart.items,
-					{
-						...product,
-						quantity: 1
-					}
+					{item:product, quantity: 1}
 				]
 			}
 		}
-		this.carts = this.carts.map(cart => {
-			if ( cart.id === this.currentUser?.id ) {
-				return myCart
+		this.carts = this.carts.map((cart) => {
+			if ( cart.user === this.currentUser!.id) {
+				return myCart!
 			} else {
 				return cart
 			}
 		})
 		this.carts$.next(this.carts)
 	}
-	removeProduct(productName:string, id:string|undefined):void {
-		let myCart = this.carts.find(c => c.user === id)
-		let item = myCart.items.find( (i:any) => i.name === productName )
+	removeProduct(productName:string, id:string):void {
+		let myCart:ICart = this.carts.find((c) => c.user === id)!
+		let item:ICartItem = myCart!.items.find( (i) => i.item.name === productName )!
 		if (item.quantity > 1 ) {
 			item.quantity--
 		} else {
-			myCart.items = myCart.items.filter((item:any) => item.name !== productName)
+			myCart.items = myCart!.items.filter((i) => i.item.name !== productName)
 		}
 		this.carts = [
 			...this.carts,

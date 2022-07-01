@@ -1,8 +1,9 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import { faCartShopping } from "@fortawesome/free-solid-svg-icons";
-import {DataService} from "../../data.service";
+import {DataService} from "../../services/data.service";
 import IUser from "../../interfaces/IUser";
 import {Subscription} from "rxjs";
+import ICart from "../../interfaces/ICart";
 
 @Component({
 	selector: 'app-header',
@@ -10,24 +11,22 @@ import {Subscription} from "rxjs";
 	styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit, OnDestroy {
-	imagePath = '/assets/media/logo.png'
 	iCart = faCartShopping
 	currentUser!:IUser|null
 	currentUserSub:Subscription
-	carts:any
+	userCart:ICart|undefined
 	cartsSub:Subscription
 	userCartCount:number = 0
 
 	constructor(private dataService:DataService) {
-		this.currentUserSub = dataService.currentUser$.subscribe(newValue => this.currentUser = newValue)
-		this.cartsSub = dataService.carts$.subscribe(nextValue => {
-			this.carts = nextValue
-			let myCart = dataService.carts.find(cart => cart.user === this.currentUser?.id)
-			let total:any = 0
-			myCart.items.forEach((item:any) => {
-				total += item.quantity
-			})
-			this.userCartCount = total
+		this.currentUserSub = dataService.currentUser$.subscribe((newValue) => {
+			this.currentUser = newValue
+			this.userCart = dataService.carts.find((cart) => cart.user === this.currentUser!.id)
+			this.setCount()
+		})
+		this.cartsSub = dataService.carts$.subscribe((nextValue) => {
+			this.userCart = nextValue.find((cart) => cart.user === this.currentUser!.id)
+			this.setCount()
 		})
 
 	}
@@ -35,8 +34,15 @@ export class HeaderComponent implements OnInit, OnDestroy {
 	}
 	ngOnDestroy():void {
 		this.currentUserSub.unsubscribe()
+		this.cartsSub.unsubscribe()
 	}
 	logout(){
 		this.dataService.logout()
+	}
+	setCount():void{
+		this.userCartCount = 0
+		this.userCart?.items.forEach((item) => {
+			this.userCartCount += item.quantity
+		})
 	}
 }
